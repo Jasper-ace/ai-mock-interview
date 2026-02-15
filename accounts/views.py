@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+import os
 
 
 def register_view(request):
@@ -58,4 +59,13 @@ def dashboard_view(request):
     if not request.user.is_authenticated:
         return redirect("login")
 
-    return render(request, "dashboard.html")
+    return render(request, "dashboard.html", {
+        'groq_api_key': os.environ.get('GROQ_API_KEY', '')
+    })
+
+
+def profile_view(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    return render(request, "profile.html")
+
